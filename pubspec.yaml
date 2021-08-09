@@ -1,7 +1,7 @@
 name: gt3_captcha
-description: A new flutter plugin project.
+description: A flutter plugin project for https://docs.geetest.com/sensebot/start/.
 version: 0.0.1
-homepage:
+homepage: https://github.com/dujj/gt3_captcha
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
