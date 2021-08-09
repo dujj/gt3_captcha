@@ -1,0 +1,41 @@
+group 'com.seewo.flutter.gt3_captcha'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 16
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+    dependencies {
+        implementation 'org.jetbrains:annotations:15.0'
+        implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+        implementation 'com.geetest.sensebot:sensebot:4.3.4.1'
+    }
+}
