@@ -73,6 +73,21 @@ class _MyAppState extends State<MyApp> {
               onGt3CaptchaViewCreated: (controller) {
                 controller.start();
               },
+              onGtViewShow: () async {
+                print('onGtViewShow');
+              },
+              onCancel: () async {
+                print('onCancel');
+                setState(() {
+                  isShowCaptch = false;
+                });
+              },
+              onError: () async {
+                print('onError');
+                setState(() {
+                  isShowCaptch = false;
+                });
+              },
             ),
           ),
         ],
@@ -81,7 +96,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<String?> _onRegister() async {
-    final url = "https://*******/register";
+    final url = "https://********/register";
     var res = await _dio.post(url);
     var data = res.data;
     print(data);
@@ -96,7 +111,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<String?> _onValidation(String params) async {
-    final url = "https://*******/validate";
+    final url = "https://********/validate";
     var mParams = JsonDecoder().convert(params);
     var res = await _dio.post(url, data: mParams);
     var data = res.data;

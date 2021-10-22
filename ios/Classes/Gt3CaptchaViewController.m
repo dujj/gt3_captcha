@@ -60,7 +60,6 @@
 
 - (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([[call method] isEqualToString:@"start"]) {
-      [_view showAnimate];
       [_manager startGTCaptchaWithAnimated:YES];
       result(nil);
   } else {
@@ -69,7 +68,11 @@
 }
 
 - (void)gtCaptchaWillShowGTView:(GT3CaptchaManager *)manager {
-    [_view hiddenAnimate];
+    [_channel invokeMethod:@"onGtViewShow" arguments:nil result:nil];
+}
+
+- (void)gtCaptchaUserDidCloseGTView:(GT3CaptchaManager *)manager {
+    [_channel invokeMethod:@"onCancel" arguments:nil result:nil];
 }
 
 - (void)gtCaptcha:(GT3CaptchaManager *)manager didReceiveSecondaryCaptchaData:(NSData *)data response:(NSURLResponse *)response error:(GT3Error *)error decisionHandler:(void (^)(GT3SecondaryCaptchaPolicy))decisionHandler {
@@ -77,7 +80,9 @@
 }
 
 - (void)gtCaptcha:(GT3CaptchaManager *)manager errorHandler:(GT3Error *)error {
-    
+    if (error != nil) {
+        [_channel invokeMethod:@"onError" arguments:nil result:nil];
+    }
 }
 
 @end

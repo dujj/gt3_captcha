@@ -16,15 +16,6 @@
     }
     return self;
 }
-
-
-
-- (void)showAnimate {
-}
-
-- (void)hiddenAnimate {
-}
-
 @end
 
 

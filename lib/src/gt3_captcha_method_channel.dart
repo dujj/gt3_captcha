@@ -22,6 +22,12 @@ class MethodChannelGt3CaptchaViewPlatform
       case 'onValidation':
         var params = call.arguments as String;
         return await _platformCallbacksHandler.onValidation(params);
+      case 'onGtViewShow':
+        return await _platformCallbacksHandler.onGtViewShow();
+      case 'onCancel':
+        return await _platformCallbacksHandler.onCancel();
+      case 'onError':
+        return await _platformCallbacksHandler.onError();
     }
 
     throw MissingPluginException(

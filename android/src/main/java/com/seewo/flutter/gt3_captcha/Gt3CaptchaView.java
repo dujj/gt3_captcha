@@ -3,6 +3,7 @@ package com.seewo.flutter.gt3_captcha;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,6 +15,7 @@ import com.geetest.sdk.GT3ConfigBean;
 import com.geetest.sdk.GT3Listener;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,18 +87,27 @@ public class Gt3CaptchaView implements PlatformView, MethodChannel.MethodCallHan
 
         @Override
         public void onReceiveCaptchaCode(int i) {
+            Log.i("flutter", "onReceiveCaptchaCode");
+        }
 
+        @Override
+        public void onDialogReady(String s) {
+            Log.i("flutter", "onDialogReady");
         }
 
         @Override
         public void onDialogResult(String result) {
+            Log.i("flutter", "onDialogResult");
             methodChannel.invokeMethod("onValidation", result, new MethodChannel.Result() {
                 @Override
                 public void success(@Nullable @org.jetbrains.annotations.Nullable Object result) {
-
-                    Boolean success = new Boolean(result.toString());
-                    if (success) {
-                        gt3GeetestUtils.showSuccessDialog();
+                    if (result != null) {
+                        Boolean success = new Boolean(result.toString());
+                        if (success) {
+                            gt3GeetestUtils.showSuccessDialog();
+                        } else {
+                            gt3GeetestUtils.showFailedDialog();
+                        }
                     } else {
                         gt3GeetestUtils.showFailedDialog();
                     }
@@ -117,41 +128,49 @@ public class Gt3CaptchaView implements PlatformView, MethodChannel.MethodCallHan
 
         @Override
         public void onStatistics(String s) {
-
+            Log.i("flutter", "onStatistics");
         }
 
         @Override
         public void onClosed(int i) {
-
+            Log.i("flutter", "onClosed");
+            methodChannel.invokeMethod("onCancel", null, null);
         }
 
         @Override
         public void onSuccess(String s) {
-
+            Log.i("flutter", "onSuccess");
         }
 
         @Override
         public void onFailed(GT3ErrorBean gt3ErrorBean) {
-
+            Log.i("flutter", "onFailed");
+            methodChannel.invokeMethod("onError", null, null);
         }
 
         @Override
         public void onButtonClick() {
+            Log.i("flutter", "onButtonClick");
+            methodChannel.invokeMethod("onGtViewShow", null, null);
             methodChannel.invokeMethod("onRegister", null, new MethodChannel.Result() {
                 @Override
                 public void success(@Nullable @org.jetbrains.annotations.Nullable Object result) {
-                    try {
-                        JSONObject data = new JSONObject(result.toString());
-                        Boolean success = data.optBoolean("success");
-                        if (success) {
-                            data.put("success", 1);
-                        } else {
-                            data.put("success", 0);
+                    if (result != null) {
+                        try {
+                            JSONObject data = new JSONObject(result.toString());
+                            Boolean success = data.optBoolean("success");
+                            if (success) {
+                                data.put("success", 1);
+                            } else {
+                                data.put("success", 0);
+                            }
+                            data.put("new_captcha", true);
+                            gt3ConfigBean.setApi1Json(data);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            gt3ConfigBean.setApi1Json(null);
                         }
-                        data.put("new_captcha", true);
-                        gt3ConfigBean.setApi1Json(data);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else {
                         gt3ConfigBean.setApi1Json(null);
                     }
                     // 继续验证

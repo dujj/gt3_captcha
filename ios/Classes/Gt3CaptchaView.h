@@ -13,10 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFrame:(CGRect)frame;
 
-- (void)showAnimate;
-
-- (void)hiddenAnimate;
-
 @end
 
 NS_ASSUME_NONNULL_END

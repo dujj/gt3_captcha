@@ -68,9 +68,12 @@ typedef Gt3CaptchaErrorCallback = void Function(String, String);
 class Gt3CaptchaView extends StatefulWidget {
   const Gt3CaptchaView({
     Key? key,
+    this.onGt3CaptchaViewCreated,
+    required this.onGtViewShow,
     required this.onRegister,
     required this.onValidation,
-    this.onGt3CaptchaViewCreated,
+    required this.onCancel,
+    required this.onError,
   }) : super(key: key);
 
   static Gt3CaptchaViewPlatform? _platform;
@@ -101,6 +104,10 @@ class Gt3CaptchaView extends StatefulWidget {
   final Gt3CaptchaViewPlatformRegisterCallback onRegister;
 
   final Gt3CaptchaViewPlatformValidationCallback onValidation;
+
+  final Gt3CaptchaViewPlatformNullCallback onGtViewShow;
+  final Gt3CaptchaViewPlatformNullCallback onCancel;
+  final Gt3CaptchaViewPlatformNullCallback onError;
 
   @override
   State<StatefulWidget> createState() => _Gt3CaptchaViewState();
@@ -158,6 +165,18 @@ class _PlatformCallbacksHandler
 
   Future<bool?> onValidation(String params) async {
     return await _widget.onValidation(params);
+  }
+
+  Future<Null> onGtViewShow() async {
+    return await _widget.onGtViewShow();
+  }
+
+  Future<Null> onCancel() async {
+    return await _widget.onCancel();
+  }
+
+  Future<Null> onError() async {
+    return await _widget.onError();
   }
 }
 
